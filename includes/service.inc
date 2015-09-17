@@ -128,7 +128,7 @@ class SearchApiSearchNodeService extends SearchApiAbstractService {
     $search_node_index = $index->options['search_node_indexes'];
     if (!empty($search_node_index)) {
       foreach ($items as $id => $item) {
-        // Filter the items to better match the value search node works.
+        // Filter the items to better match the way search node works.
         $filteredItem = $this->filterOutValue($item);
 
         // Check if content type have been set.

@@ -12,6 +12,8 @@ class SearchNodeClient {
    * The host where search node is located.
    *
    * @var string
+   *
+   * @TODO: Review - is this default not always overriden in the constructor?
    */
   protected $host = 'https://127.0.0.1';
 
@@ -94,6 +96,10 @@ class SearchNodeClient {
    *
    * @return array|mixed
    *   The indexes and information about theme.
+   *
+   * @TODO: Review - possibility for reuse of code between all the functions
+   *        below, that all have the same headers. Could be a part of making
+   *        the class non-drupal dependant.
    */
   public function getIndexes() {
     $indexes = array();
