@@ -283,7 +283,7 @@ class SearchNodeClient {
       )
     ));
 
-    if ($request->code == 201) {
+    if ($request->code == 200) {
       return TRUE;
     }
 
