@@ -26,6 +26,9 @@ class SearchApiSearchNodeService extends SearchApiAbstractService {
       $apikey = variable_get('search_api_' . $server->machine_name . '_apikey', $this->options['apikey']);
       $host = variable_get('search_api_' . $server->machine_name . '_host', $this->options['host']);
 
+      // Update keys to get them right in UI.
+      $this->options['api_key'] = $apikey;
+
       $this->connection = new SearchNodeClient($host, $apikey);
       $this->connection->authenticate();
     }
@@ -121,6 +124,32 @@ class SearchApiSearchNodeService extends SearchApiAbstractService {
     }
 
     return $info;
+  }
+
+  /**
+   * Implements SearchApiServiceInterface::__construct().
+   *
+   * The default implementation does a crude output as a definition list, with
+   * option names taken from the configuration form.
+   */
+  public function viewSettings() {
+    $output = '';
+    $form = $form_state = array();
+    $option_form = $this->configurationForm($form, $form_state);
+    $option_names = array();
+    foreach ($option_form as $key => $element) {
+      if (isset($element['#title']) && isset($this->options[$key])) {
+        $option_names[$key] = $element['#title'];
+      }
+    }
+
+    foreach ($option_names as $key => $name) {
+      $value = variable_get('search_api_' . $this->server->machine_name . '_' . $key, $this->options[$key]);
+      $output .= '<dt>' . check_plain($name) . '</dt>' . "\n";
+      $output .= '<dd>' . nl2br(check_plain(print_r($value, TRUE))) . '</dd>' . "\n";
+    }
+
+    return $output ? "<dl>\n$output</dl>" : '';
   }
 
   /**
