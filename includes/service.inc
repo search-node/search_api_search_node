@@ -26,9 +26,6 @@ class SearchApiSearchNodeService extends SearchApiAbstractService {
       $apikey = variable_get('search_api_' . $server->machine_name . '_apikey', $this->options['apikey']);
       $host = variable_get('search_api_' . $server->machine_name . '_host', $this->options['host']);
 
-      // Update keys to get them right in UI.
-      $this->options['api_key'] = $apikey;
-
       $this->connection = new SearchNodeClient($host, $apikey);
       $this->connection->authenticate();
     }
@@ -158,7 +155,10 @@ class SearchApiSearchNodeService extends SearchApiAbstractService {
   public function indexItems(SearchApiIndex $index, array $items) {
     $indexed = array();
 
+    // Check that the index have not been override in settings.
     $search_node_index = $index->options['search_node_indexes'];
+    $search_node_index = variable_get('search_api_' . $this->server->machine_name . '_index_' . $index->machine_name, $search_node_index);
+
     if (!empty($search_node_index)) {
       foreach ($items as $id => $item) {
         // Filter the items to better match the value search node works.
