@@ -362,6 +362,14 @@ class SearchApiSearchNodeService extends SearchApiAbstractService {
           $item[$key] = $this->addFileUrl($field['value']);
           break;
 
+        case 'integer':
+          $item[$key] = intval($field['value']);
+          break;
+
+        case 'decimal':
+          $item[$key] = floatval($field['value']);
+          break;
+
         default:
           $item[$key] = $field['value'];
       }
