@@ -196,7 +196,10 @@ class SearchApiSearchNodeService extends SearchApiAbstractService {
    */
   public function deleteItems($ids = 'all', SearchApiIndex $index = NULL) {
     if ($index) {
+      // Check that the index have not been override in settings.
       $search_node_index = $index->options['search_node_indexes'];
+      $search_node_index = variable_get('search_api_' . $this->server->machine_name . '_index_' . $index->machine_name, $search_node_index);
+
       if (!empty($search_node_index)) {
         if ($ids == 'all') {
           $this->connection->flush($search_node_index);
